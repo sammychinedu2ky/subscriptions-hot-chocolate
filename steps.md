@@ -1,0 +1,2 @@
+- dotnet new webapi -minimal
+- dotnet add package HotChocolate --version 12.14.0
