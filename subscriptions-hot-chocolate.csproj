@@ -7,4 +7,11 @@
     <RootNamespace>subscriptions_hot_chocolate</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HotChocolate.AspNetCore" Version="12.14.0" />
+  </ItemGroup>
+
 </Project>
