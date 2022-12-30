@@ -13,6 +13,7 @@ builder.Services.AddHostedService<CurrencyUpdateService>();
 var app = builder.Build();
 app.UseWebSockets();
 app.MapGraphQL();
+app.MapGet("/",()=>"Hello World");
 app.Run();
 
 public class Currency
