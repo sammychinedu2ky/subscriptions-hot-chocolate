@@ -52,6 +52,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'swac-publish'
-          slot-name: 'Test'
-          publish-profile: ${{ secrets.Test }}
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.Production }}
           package: .
