@@ -11,7 +11,7 @@ builder.Services.AddGraphQLServer()
 // Add background host
 builder.Services.AddHostedService<CurrencyUpdateService>();
 var app = builder.Build();
-app.MapGet("/",()=>"I'm from Prod");
+app.MapGet("/",()=>"I'm from Test");
 app.UseWebSockets();
 app.MapGraphQL();
 app.Run();
