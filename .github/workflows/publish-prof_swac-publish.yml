@@ -36,6 +36,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: swac-publish
-          path: ${{env.DOTNET_ROOT}}/myapp
+          package: ${{env.DOTNET_ROOT}}/myapp
 
  
