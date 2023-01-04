@@ -6,7 +6,7 @@ name: Build and deploy ASP.Net Core app to Azure Web App - swac-publish
 on:
   push:
     branches:
-      - publish-prof
+      - service-prince
   workflow_dispatch:
 
 jobs:
