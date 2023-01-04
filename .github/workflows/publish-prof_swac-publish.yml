@@ -33,7 +33,7 @@ jobs:
 
       #Deploy to Azure web apps
       - name:  Run Azure Webapps deploy action using profile credentials
-        uses: actions/deploy@v2
+        uses: azure/webapps-deploy@v2
         with:
           app-name: swac-publish
           path: ${{env.DOTNET_ROOT}}/myapp
