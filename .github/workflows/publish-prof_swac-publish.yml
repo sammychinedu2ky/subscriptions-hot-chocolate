@@ -42,5 +42,7 @@ jobs:
         with:
           app-name:  swac-openid4
           package: ${{env.DOTNET_ROOT}}/myapp
-
- 
+    
+      # Azure logout 
+      - name: logout
+        run: az logout
