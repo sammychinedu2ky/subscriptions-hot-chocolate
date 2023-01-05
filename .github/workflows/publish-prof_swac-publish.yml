@@ -6,8 +6,12 @@ name: Build and deploy ASP.Net Core app to Azure Web App - swac-publish
 on:
   push:
     branches:
-      - service-prince
+      - openid
   workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
 
 jobs:
   build:
@@ -17,7 +21,9 @@ jobs:
       - uses: actions/checkout@v2
       - uses: azure/login@v1
         with:
-          creds: ${{ secrets.Credentials }}
+          client-id: ${{ secrets.clientId }}
+          tenant-id: ${{ secrets.tenantId }}
+          subscription-id: ${{ secrets.subscriptionId }}
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
