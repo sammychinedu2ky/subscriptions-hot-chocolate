@@ -40,7 +40,7 @@ jobs:
       - name:  Run Azure Webapps deploy action using profile credentials
         uses: azure/webapps-deploy@v2
         with:
-          app-name:  swac-openid4
+          app-name:  swac-openid5
           package: ${{env.DOTNET_ROOT}}/myapp
     
       # Azure logout 
