@@ -18,11 +18,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.clientId }}
-          tenant-id: ${{ secrets.tenantId }}
-          subscription-id: ${{ secrets.subscriptionId }}
+
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
@@ -49,8 +45,15 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: login to azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.clientId }}
+          tenant-id: ${{ secrets.tenantId }}
+          subscription-id: ${{ secrets.subscriptionId }}
 
-      - uses: actions/download-artifact@v2
+      - name: Download artifact
+        uses: actions/download-artifact@v2
         with:
           name: .net-app
 
