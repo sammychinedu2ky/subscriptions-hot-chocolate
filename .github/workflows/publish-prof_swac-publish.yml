@@ -72,7 +72,7 @@ jobs:
           package: .
       # output the web app url
       - name: Display the web app url
-        run: echo "Web app available at ${{ steps.azure_webapp.outputs_webapp-url }}"
+        run: echo "Web app available at ${{ steps.azure_webapp.outputs.webapp-url }}"
     
       # Azure logout 
       - name: logout
