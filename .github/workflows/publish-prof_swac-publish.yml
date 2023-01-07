@@ -13,7 +13,7 @@ permissions:
   id-token: write
 
 jobs:
-  build:
+  buildanddeploy:
     runs-on: ubuntu-latest
 
     steps:
