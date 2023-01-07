@@ -38,9 +38,6 @@ jobs:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
 
-
-
-
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -57,12 +54,6 @@ jobs:
         with:
           name: .net-app
 
-      # List the files in the artifact
-      - name: List files in the artifact
-        run: |
-          pwd
-          ls -la
-
       #Deploy to Azure web apps
       - name:  Run Azure Webapps deploy action using profile credentials
         id: azure_webapp
@@ -72,7 +63,8 @@ jobs:
           package: .
       # output the web app url
       - name: Display the web app url
-        run: echo "Web app available at ${{ steps.azure_webapp.outputs.webapp-url }}"
+        #add summary
+        run: echo "Web app available at ${{ steps.azure_webapp.outputs.webapp-url }}" >> $GITHUB_STEP_SUMMARY
     
       # Azure logout 
       - name: logout
