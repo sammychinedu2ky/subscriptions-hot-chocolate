@@ -13,7 +13,7 @@ permissions:
   id-token: write
 
 jobs:
-  buildanddeploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -36,13 +36,38 @@ jobs:
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v2
+        with:
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/myapp
+
+
+
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: .net-app
+
+      # List the files in the artifact
+      - name: List files in the artifact
+        run: ls -l
+
       #Deploy to Azure web apps
       - name:  Run Azure Webapps deploy action using profile credentials
         uses: azure/webapps-deploy@v2
         with:
           app-name:  swacky
-          package: ${{env.DOTNET_ROOT}}/myapp
+          package: .
     
       # Azure logout 
       - name: logout
         run: az logout
+
+
+
