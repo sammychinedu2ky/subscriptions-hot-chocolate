@@ -63,10 +63,14 @@ jobs:
 
       #Deploy to Azure web apps
       - name:  Run Azure Webapps deploy action using profile credentials
+        id: azure_webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name:  swacky
           package: .
+      # output the web app url
+      - name: Display the web app url
+        run: echo "Web app available at ${{ steps.azure_webapp.outputs }}"
     
       # Azure logout 
       - name: logout
