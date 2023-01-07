@@ -59,7 +59,9 @@ jobs:
 
       # List the files in the artifact
       - name: List files in the artifact
-        run: ls -l
+        run: |
+          pwd
+          ls -la
 
       #Deploy to Azure web apps
       - name:  Run Azure Webapps deploy action using profile credentials
