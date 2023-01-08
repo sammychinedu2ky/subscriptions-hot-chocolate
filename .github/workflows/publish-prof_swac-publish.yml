@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: Production
-      url: ${{ steps.deploy-to-azure.outputs.webapp-url }}
+      url: ${{ steps.azure_webapp.outputs.webapp-url }}
     steps:
       - name: login to azure
         uses: azure/login@v1
