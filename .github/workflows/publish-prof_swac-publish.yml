@@ -1,41 +1,42 @@
-name: Publish to Azure
+name: Testing the mic
 on: push
 jobs:
  build:
   runs-on: ubuntu-latest
   steps:
-   - name: check in to repo
+   - name: check out repo
      uses: actions/checkout@v2
-   - name: publish to folder
+   - name: publish the app
      run: dotnet publish -c Release -o app
-   - name: upload folder as artifact
+   - name: upload to artifact
      uses: actions/upload-artifact@v2
      with:
       name: .net-app
       path: app
- deploy:
-  needs: build
-  runs-on: ubuntu-latest
-  permissions:
-   id-token: write
-  environment:
-   name: Production
-   url: ${{steps.deploy.outputs.webapp-url}}
-  steps:
-   - name: login to Azure
-     uses: azure/login@v1
-     with:
-      client-id: ${{secrets.clientId}}
-      subscription-id: ${{secrets.subscriptionId}}
-      tenant-id: ${{secrets.tenantId}}
-   - name: download artifact
-     uses: actions/download-artifact@v2
-     with:
-      name: .net-app
-   - name: upload app to azure
-     uses: azure/webapps-deploy@v2
-     with: 
-      app-name: swacky
-      package: .
-   - name: logout from azure
-     run: az logout
+ deploy: 
+   needs:  build
+   runs-on: ubuntu-latest
+   environment: 
+    name: Production
+    url: ${{steps.deploy-to-azure.outputs.webapp-url}}
+   permissions:
+    id-token: write
+   steps:
+    - name: login to azure
+      uses: azure/login@v1
+      with:
+       client-id: ${{secrets.clientId}}
+       subscription-id: ${{secrets.subscriptionId}}
+       tenant-id: ${{secrets.tenantId}}
+    - name: download artifact
+      uses: actions/download-artifact@v2
+      with: 
+       name: .net-app
+    - name: upload to azure
+      uses: azure/webapps-deploy@v2
+      with:
+       app-name: swacky
+       package: .
+    - name: logout
+      run: az logout
+    
