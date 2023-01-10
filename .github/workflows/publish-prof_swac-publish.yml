@@ -18,6 +18,9 @@ jobs:
   deploy:
    needs: build
    runs-on: ubuntu-latest
+   environment:
+    name: Production
+    url: ${{steps.deploy.outputs.webapp-url}}
    permissions:
     id-token: write
    steps:
@@ -32,6 +35,7 @@ jobs:
       with:
        name: .net-app
     - name: deploy to azure 
+      id: deploy
       uses: azure/webapps-deploy@v2
       with:
        app-name: swacky
