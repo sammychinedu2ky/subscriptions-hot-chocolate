@@ -4,7 +4,7 @@ jobs:
   build:
    runs-on: ubuntu-latest
    steps: 
-    - uses: action/checkout@v2
+    - uses: actions/checkout@v2
     
     - name: Setup .NET
       uses: action/setup-dotnet@v1
@@ -15,12 +15,13 @@ jobs:
       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/app
 
     - name: Upload Zip
-      uses: action/upload-artifact@v2
+      uses: actions/upload-artifact@v2
       with:
        name: .net-app
        path: ${{env.DOTNET_ROOT}}/app
 
   deploy:
+   needs: build
    runs-on: ubuntu-latest
    permissions:
      id-token: write
@@ -36,7 +37,7 @@ jobs:
        tenant-id: ${{secrets.tenantId}}
 
     - name: Download App
-      uses: action/download-artifact@v2
+      uses: actions/download-artifact@v2
       with: 
        name: .net-app
        path: .
