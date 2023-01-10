@@ -44,7 +44,7 @@ jobs:
       
     - name: Upload App 
       id: deploy-to-azure
-      uses: azure/web-deploy@v2
+      uses: azure/webapps-deploy@v2
       with: 
        app-name: swacky
        package: .
