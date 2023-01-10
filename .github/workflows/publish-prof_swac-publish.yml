@@ -32,7 +32,7 @@ jobs:
       with:
        name: .net-app
     - name: deploy to azure 
-      uses: azure/webapps-deploy
+      uses: azure/webapps-deploy@v2
       with:
        app-name: swacky
        package: .
