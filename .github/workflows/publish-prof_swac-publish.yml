@@ -35,6 +35,7 @@ jobs:
    - name: upload app to azure
      uses: azure/webapps-deploy@v2
      with: 
+      app-name: swacky
       package: .
    - name: logout from azure
      run: az logout
