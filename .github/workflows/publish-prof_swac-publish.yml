@@ -12,13 +12,13 @@ jobs:
        dotnet-version: '7.x'
 
     - name: Publish App
-      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/app
+      run: dotnet publish -c Release -o app
 
     - name: Upload Zip
       uses: actions/upload-artifact@v2
       with:
        name: .net-app
-       path: ${{env.DOTNET_ROOT}}/app
+       path: app
 
   deploy:
    needs: build
