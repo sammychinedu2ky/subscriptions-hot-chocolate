@@ -1,41 +1,71 @@
-name: Build and Deploy to Azure
+name: Build and deploy ASP.Net Core app to Azure Web App - swac-publish
 
-on: push
+on:
+  push:
+    branches:
+      - openid
+
+permissions:
+  contents: read
+  id-token: write
 
 jobs:
   build:
-   runs-on: ubuntu-latest
-   steps:
-    - name: check-into-repo
-      uses: actions/checkout@v2
-    - name: publish app
-      run: dotnet publish -c Release -o app
-    - name: upload artifact
-      uses: actions/upload-artifact@v2
-      with: 
-       name: .net-app
-       path: app
-  deploy:
-   needs: build
-   runs-on: ubuntu-latest
-   permissions:
-    id-token: write
-   steps:
-    - name: login to Azure
-      uses: azure/login@v1
-      with:
-       client-id: ${{secrets.clientId}}
-       subscription-id: ${{secrets.subscriptionId}}
-       tenant-id: ${{secrets.tenantId}}
-    - name: download zip
-      uses: actions/download-artifact@v2
-      with:
-       name: .net-app
-    - name: deploy to azure 
-      uses: azure/webapps-deploy
-      with:
-       app-name: swacky
-       package: .
-    - name: logout from azure
-      run: az logout
+    runs-on: ubuntu-latest
 
+    steps:
+      - uses: actions/checkout@v2
+
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '7.x'
+          include-prerelease: true
+
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
+
+      - name: dotnet publish
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v2
+        with:
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/myapp
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: Production
+      url: ${{ steps.azure_webapp.outputs.webapp-url }}
+    steps:
+      - name: login to azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.clientId }}
+          tenant-id: ${{ secrets.tenantId }}
+          subscription-id: ${{ secrets.subscriptionId }}
+
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: .net-app
+
+      #Deploy to Azure web apps
+      - name:  Run Azure Webapps deploy action using profile credentials
+        id: azure_webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name:  swacky
+          package: .
+      # output the web app url
+      - name: Display the web app url
+        #add summary
+        run: echo "Web app available at ${{ steps.azure_webapp.outputs.webapp-url }}" >> $GITHUB_STEP_SUMMARY
+    
+      # Azure logout 
+      - name: logout
+        run: az logout
