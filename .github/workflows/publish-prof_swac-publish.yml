@@ -1,55 +1,40 @@
-name : Build and Deploy a .NET API 
-on : push
+name: Build and Deploy to Azure
+
+on: push
+
 jobs:
   build:
    runs-on: ubuntu-latest
-   steps: 
-    - uses: actions/checkout@v2
-    
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-
-
-    - name: Publish App
+   steps:
+    - name: check-into-repo
+      uses: actions/checkout@v2
+    - name: publish app
       run: dotnet publish -c Release -o app
-
-    - name: Upload Zip
+    - name: upload artifact
       uses: actions/upload-artifact@v2
-      with:
+      with: 
        name: .net-app
        path: app
-
   deploy:
-   needs: build
    runs-on: ubuntu-latest
    permissions:
-     id-token: write
-   environment:
-     name: Production
-     url: ${{steps.deploy-to-azure.outputs.webapp-url}}
+    id-token: write
    steps:
-    - name: Login to Azure
+    - name: login to Azure
       uses: azure/login@v1
       with:
        client-id: ${{secrets.clientId}}
        subscription-id: ${{secrets.subscriptionId}}
        tenant-id: ${{secrets.tenantId}}
-
-    - name: Download App
+    - name: download zip
       uses: actions/download-artifact@v2
-      with: 
+      with:
        name: .net-app
-       path: .
-      
-    - name: Upload App 
-      id: deploy-to-azure
-      uses: azure/webapps-deploy@v2
-      with: 
+    - name: deploy to azure 
+      uses: azure/webapps-deploy
+      with:
        app-name: swacky
        package: .
-
-    - name: Azure Logout
+    - name: logout from azure
       run: az logout
-      
-  
-   
+
